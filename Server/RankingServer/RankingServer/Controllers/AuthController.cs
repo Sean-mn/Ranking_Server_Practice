@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using RankingServer.DBContexts;
+using RankingServer.Models;
 using RankingServer.Requests;
 
 namespace RankingServer.Controllers
@@ -28,7 +29,23 @@ namespace RankingServer.Controllers
                 return Conflict($"이미 존재하는 유저 이음: {request.Username}");
             }
             
-            var password = 
+            var password = BCrypt.Net.BCrypt.HashPassword(request.Password);
+
+            User newUser = new User
+            {
+                Username = request.Username,
+                Password = password
+            };
+            
+            _context.Users.Add(newUser);
+            _context.SaveChanges();
+
+            string completedSignUpTxt = $"{request.Username}, 회원가입 완료!";
+            
+            _logger.LogInformation(completedSignUpTxt);
+            return Ok(completedSignUpTxt);
         }
+        
+        
     }
 }
