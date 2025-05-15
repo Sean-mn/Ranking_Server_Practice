@@ -1,5 +1,8 @@
-﻿namespace RankingServer.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
+namespace RankingServer.Models;
+
+[Table("user")]
 public class User
 {
     public int Id {get; set;}
