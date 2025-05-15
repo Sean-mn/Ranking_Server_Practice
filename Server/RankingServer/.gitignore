@@ -1,0 +1,41 @@
+# Build results
+bin/
+obj/
+[Bb]uild/
+[Ll]ogs/
+.vs/
+*.user
+*.suo
+
+# ASP.NET Core 관련
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# User-specific files
+*.rsuser
+*.sln.docstates
+
+# Rider (JetBrains)
+.idea/
+*.sln.iml
+
+# npm
+node_modules/
+
+# 환경 설정 파일 (옵션)
+appsettings.*.local.json
+
+# Dotnet 관련
+*.dotCover
+*.ncrunch*
+*.vspscc
+*.vssscc
+
+# Publish 결과
+wwwroot/
+
+# 기타
+*.db
+*.sqlite
+.env
