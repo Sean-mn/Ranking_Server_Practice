@@ -20,6 +20,7 @@ namespace RankingServer.Controllers
             _logger = logger;
         }
 
+        // 회원가입 기능 (api/auth/signup)
         [HttpPost("signup")]
         public IActionResult SignUp([FromBody] UserSignUpRequest request)
         {
@@ -50,6 +51,7 @@ namespace RankingServer.Controllers
             return Ok(completedSignUpTxt);
         }
 
+        // 로그인 기능 (api/auth/login)
         [HttpPost("login")]
         public IActionResult Login([FromBody] UserLoginRequest request)
         {
