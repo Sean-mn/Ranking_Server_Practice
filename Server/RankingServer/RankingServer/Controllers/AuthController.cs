@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RankingServer.DBContexts;
 using RankingServer.Managers;
 using RankingServer.Models;
@@ -22,11 +23,11 @@ namespace RankingServer.Controllers
 
         // 회원가입 기능 (api/auth/signup)
         [HttpPost("signup")]
-        public IActionResult SignUp([FromBody] UserSignUpRequest request)
+        public async Task<IActionResult> SignUp([FromBody] UserSignUpRequest request)
         {
             _logger.LogInformation($"회원가입 요청: {request.Username}");
 
-            if (_context.Users.Any(u => u.Username == request.Username))
+            if (await _context.Users.AnyAsync(u => u.Username == request.Username))
             {
                 string checkExistingUserName = $"이미 존재하는 유저 이름: {request.Username}";
                 
@@ -42,8 +43,8 @@ namespace RankingServer.Controllers
                 Password = password
             };
             
-            _context.Users.Add(newUser);
-            _context.SaveChanges();
+            await _context.Users.AddAsync(newUser);
+            await _context.SaveChangesAsync();
 
             string completedSignUpTxt = $"{request.Username}, 회원가입 완료!";
             
@@ -53,13 +54,13 @@ namespace RankingServer.Controllers
 
         // 로그인 기능 (api/auth/login)
         [HttpPost("login")]
-        public IActionResult Login([FromBody] UserLoginRequest request)
+        public async Task<IActionResult> Login([FromBody] UserLoginRequest request)
         {
             _logger.LogInformation($"로그인 요청: {request.Username}");
 
             try
             {
-                var user = _context.Users.FirstOrDefault(u => u.Username == request.Username);
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
                 if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
                 {
                     _logger.LogWarning($"알맞지 않은 유저 정보: {request.Username}");
